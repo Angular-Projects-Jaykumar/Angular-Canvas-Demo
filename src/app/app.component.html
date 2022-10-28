@@ -1,0 +1,196 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 main-title">
+            <h4>JayKumar Demo</h4>
+        </div>
+        <div class="col-xl-12">
+            <div class="row">
+                <div class="col-xl-12 text-right">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Export to image" type="button"
+                        class="btn btn-primary m-1" (click)="rasterize();">
+                        <i class="fa fa-download" aria-hidden="true"></i> Export to image</button>
+                    <button data-toggle="tooltip" data-placement="bottom" title="Export to SVG" type="button"
+                        class="btn btn-primary m-1" (click)="rasterizeSVG();">
+                        <i class="fa fa-download" aria-hidden="true"></i> Export to SVG</button>
+                    <button data-toggle="tooltip" data-placement="bottom" title="Delete Selected Element" type="button"
+                        class="btn btn-primary m-1" (click)="removeSelected();">
+                        <i class="fa fa-trash" aria-hidden="true"></i> Delete Selected Element</button>
+                    <button data-toggle="tooltip" data-placement="bottom" title="Clean Canvas" type="button"
+                        class="btn btn-danger" (click)="confirmClear();">
+                        <i class="fa fa-ban" aria-hidden="true"></i> Clean</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xl-3">
+
+            <div class="card">
+                <div class="card-header">Select Card</div>
+                <div class="card-body max-height">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/1.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/2.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/3.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/4.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/5.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/6.jpg">
+                    <img class="images-item" (click)="selectCardImage($event)" src="../assets/cards/7.jpg">
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">Add text</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="canvas.textString">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text"
+                                    class="btn btn-primary" (click)="addText()">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">Upload image</div>
+                <div class="card-body text-center">
+                    <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url"
+                        (click)="addImageOnCanvas(canvas.url);" crossorigin="anonymous">
+                    <input type="file" (change)="readUrl($event);">
+                    <br />
+                    <br />
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                (click)="removeWhite(canvas.url);">
+                                <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <!-- <div class="card">
+              <div class="card-header">Size</div>
+              <div class="card-body">
+                  <div class="form-group">
+                      <div class="input-group">
+                          <input type="text" class="form-control" [(ngModel)]="canvas.size.width" (keyup)="changeSize()">
+                          <div class="input-group-append">
+                              <span class="input-group-text">
+                                  Width
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="input-group mb-3">
+                          <input type="text" class="form-control" [(ngModel)]="canvas.size.height" (keyup)="changeSize()">
+                          <div class="input-group-append">
+                              <span class="input-group-text">
+                                  Height
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <br/> -->
+        </div>
+        <div class="col-xl-6">
+            <angular-editor-fabric-js #canvas></angular-editor-fabric-js>
+        </div>
+        <div class="col-xl-3">
+
+
+            <div class="card">
+                <div class="card-header">Text Filters</div>
+                <div class="card-body text-center">
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
+                        <div class="custom-item-title">Opacity</div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.opacity" (change)="setOpacity()">{{canvas.props.opacity}}</div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor || canvas.selected && canvas.figureEditor">
+                        <div class="custom-item-title">Fill</div>
+                        <div class="custom-item-body">
+                            <input type="text" class="form-control" [cpPosition]="'bottom'" [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
+                                [value]="canvas.props.fill" (colorPickerChange)="setFill()">
+                        </div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="custom-item-title">Font family</div>
+                        <div class="custom-item-body">
+                            <select [(ngModel)]="canvas.props.fontFamily" class="form-control" (change)="setFontFamily()">
+                                <option value="arial">Arial</option>
+                                <option value="helvetica" selected>Helvetica</option>
+                                <option value="verdana">Verdana</option>
+                                <option value="courier">Courier</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Zilla Slab">Zilla Slab</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Bellefair">Bellefair</option>
+                                <option value="Fresca">Fresca</option>
+                                <option value="Raleway">Raleway</option>
+                                <option value="Open Sans Condensed">Open Sans Condensed</option>
+                                <option value="Indie Flower">Indie Flower</option>
+                                <option value="Josefin Sans">Josefin Sans</option>
+                                <option value="Inconsolata">Inconsolata</option>
+                                <option value="Pacifico">Pacifico</option>
+                                <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="custom-item-title">Style</div>
+                        <div class="custom-item-body text-center">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-primary btn-sm" [ngClass]="{'active': canvas.props.fontWeight }" (click)="setBold()">
+                                    <i class="fa fa-bold"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" [ngClass]="{'active': canvas.props.fontStyle }" (click)="setFontStyle()">
+                                    <i class="fa fa-italic"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" [ngClass]="{'active': hasTextDecoration('underline') }"
+                                    (click)="setTextDecoration('underline')">
+                                    <i class="fa fa-underline"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" [ngClass]="{'active': hasTextDecoration('overline') }"
+                                    (click)="setTextDecoration('overline')">
+                                    <i class="fa fa-underline fa-flip-vertical"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" [ngClass]="{'active': hasTextDecoration('line-through') }"
+                                    (click)="setTextDecoration('line-through')">
+                                    <i class="fa fa-strikethrough"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="custom-item-title">Font Size</div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" step="1" min="1" max="120">{{canvas.props.fontSize}}</div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="custom-item-title">Line Height</div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()" step="0.1" min="0" max="10">{{canvas.props.lineHeight}}</div>
+                    </div>
+                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="custom-item-title">Char Spacing</div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+</div>
