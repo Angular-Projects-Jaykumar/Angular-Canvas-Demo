@@ -2,11 +2,6 @@
 
 > Drag-and-drop editor based on Fabricjs for Angular with multiple options
 
-### Example
-![Imgur](https://i.imgur.com/sQsL8G4.png)
-### Output
-![Imgur](https://i.imgur.com/hgTEb20.png)
-
 ### Features
 * Export to image
 * Export to SVG
@@ -37,7 +32,7 @@
 ## Installing the library in your project
 
 ```bash
-npm i angular-editor-fabric-js
+npm i ngx-fiber-js
 ```
 
 # Development
@@ -45,8 +40,8 @@ npm i angular-editor-fabric-js
 ## Installing the project
 
 ```bash
-git clone https://github.com/kevoj/angular-editor-fabric-js.git
-cd angular-editor-fabric-js
+git clone https://github.com/gohiljaykumartechnomark/FiberJs
+cd FiberJs
 npm install
 ```
 ## Start
@@ -57,14 +52,5 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## License
-[MIT ©](https://github.com/kevoj/angular-editor-fabric-js/blob/master/LICENSE)
+## Demo URL
+https://canvas-card.000webhostapp.com/
